@@ -23,8 +23,6 @@ from opendns_consts import *
 import requests
 import simplejson as json
 
-requests.packages.urllib3.disable_warnings()
-
 
 class OpendnsConnector(BaseConnector):
 
