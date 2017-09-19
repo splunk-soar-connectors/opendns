@@ -1,7 +1,7 @@
 {
     "appid"    : "57640128-2815-4cc4-9baa-0799d1eb9692",
     "name"   : "OpenDNS Investigate",
-    "description": "This app implements investigative actions like 'domain reputation', 'ip reputation' and 'whois domain' by querying the OpenDNS Investigate cloud service.",
+    "description": "This app implements investigative actions by querying the OpenDNS Investigate cloud service",
     "type": "reputation",
     "main_module": "opendns_connector.pyc",
     "app_version": "1.2.19",
@@ -9,14 +9,14 @@
     "product_vendor": "OpenDNS",
     "product_name": "OpenDNS Investigate",
     "product_version_regex": ".*",
-    "min_phantom_version": "3.0.190",
+    "min_phantom_version": "3.0.247",
     "publisher": "Phantom",
     "package_name": "phantom_opendnsinvestigate",
     "logo": "opendns.png",
-    "license": "Copyright (c) Phantom Cyber Corporation 2015-2016",
+    "license": "Copyright (c) Phantom Cyber Corporation 2016-2017",
     "configuration": {
       "apikey" : {
-        "data_type": "string",
+        "data_type": "password",
         "order": 0,
         "description": "OpenDNS API key",
         "required": true
