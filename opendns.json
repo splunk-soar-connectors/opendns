@@ -1,6 +1,6 @@
 {
-    "appid"    : "57640128-2815-4cc4-9baa-0799d1eb9692",
-    "name"   : "OpenDNS Investigate",
+    "appid": "57640128-2815-4cc4-9baa-0799d1eb9692",
+    "name": "OpenDNS Investigate",
     "description": "This app implements investigative actions like 'domain reputation', 'ip reputation' and 'whois domain' by querying the OpenDNS Investigate cloud service.",
     "type": "reputation",
     "main_module": "opendns_connector.pyc",
@@ -12,621 +12,642 @@
     "min_phantom_version": "3.0.190",
     "publisher": "Phantom",
     "package_name": "phantom_opendnsinvestigate",
-    "logo": "opendns.png",
+    "logo": "logo_opendns.svg",
+    "logo_dark": "logo_opendns_dark.svg",
     "license": "Copyright (c) Phantom Cyber Corporation 2015-2016",
     "configuration": {
-      "apikey" : {
-        "data_type": "string",
-        "order": 0,
-        "description": "OpenDNS API key",
-        "required": true
-      },
-      "verify_server_cert": {
-        "data_type": "boolean",
-        "description": "Verify server certificate",
-        "required": true,
-        "order": 1,
-        "default": true
-      }
+        "apikey": {
+            "data_type": "string",
+            "order": 0,
+            "description": "OpenDNS API key",
+            "required": true
+        },
+        "verify_server_cert": {
+            "data_type": "boolean",
+            "description": "Verify server certificate",
+            "required": true,
+            "order": 1,
+            "default": true
+        }
     },
     "actions": [
-      {
-        "action": "test connectivity",
-        "description": "Validate the asset configuration for connectivity.",
-        "type": "test",
-        "identifier": "test_asset_connectivity",
-        "read_only": true,
-        "parameters": {
+        {
+            "action": "test connectivity",
+            "description": "Validate the asset configuration for connectivity.",
+            "type": "test",
+            "identifier": "test_asset_connectivity",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
         },
-        "output": [],
-        "versions":"EQ(*)"
-      },
-      {
-        "action": "domain reputation",
-        "description": "Query OpenDNS for domain info",
-        "type": "investigate",
-        "identifier":"lookup_domain",
-        "read_only": true,
-        "parameters": {
-          "domain": {
-            "description": "Domain to query",
-            "data_type": "string",
-            "order": 0,
-            "contains": ["domain"],
-            "primary": true,
-            "required": true
-          }
+        {
+            "action": "domain reputation",
+            "description": "Query OpenDNS for domain info",
+            "type": "investigate",
+            "identifier": "lookup_domain",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to query",
+                    "data_type": "string",
+                    "order": 0,
+                    "contains": [
+                        "domain"
+                    ],
+                    "primary": true,
+                    "required": true
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Domain Reputation",
+                "type": "table",
+                "height": 5
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ],
+                    "column_name": "Domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.category",
+                    "data_type": "string",
+                    "column_name": "Categories",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.handlings.normal",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.geodiversity",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.dga_score",
+                    "data_type": "numeric",
+                    "column_name": "DGA Score",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.geoscore",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.asn_score",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.rip_score",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.securerank2",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.popularity",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.ks_test",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.attack",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.pagerank",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.entropy",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.prefix_score",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.perplexity",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.found",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.fastflux",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.threat_type",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.security_info.geodiversity_normalized",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.category_info.status",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.category_info.security_categories",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.status_desc",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.tag_info.*.category",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tag_info.*.period.begin",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.tag_info.*.period.end",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.total_co_occurances",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.domain_status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.total_tag_info",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.total_relative_links",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
         },
-        "render": {
-          "width": 12,
-          "title": "Domain Reputation",
-          "type": "table",
-          "height": 5
+        {
+            "action": "ip reputation",
+            "description": "Query OpenDNS for IP info",
+            "type": "investigate",
+            "identifier": "lookup_ip",
+            "read_only": true,
+            "parameters": {
+                "ip": {
+                    "description": "IP to query",
+                    "data_type": "string",
+                    "order": 0,
+                    "contains": [
+                        "ip"
+                    ],
+                    "primary": true,
+                    "required": true
+                }
+            },
+            "render": {
+                "type": "table",
+                "width": 12,
+                "height": 5,
+                "title": "IP Reputation"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.ip",
+                    "data_type": "string",
+                    "contains": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "column_name": "Blocked Domain",
+                    "column_order": 0,
+                    "contains": [
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "column_name": "Domain ID",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.summary.total_blocked_domains",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.summary.ip_status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
         },
-        "output": [
-          {
-            "data_path": "action_result.status",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.parameter.domain",
-            "data_type": "string",
-            "contains": [ "domain" ],
-            "column_name": "Domain",
-            "column_order": 0
-          },
-          {
-            "data_path": "action_result.message",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.category",
-            "data_type": "string",
-            "column_name": "Categories",
-            "column_order": 2
-          },
-          {
-            "data_path": "action_result.data.*.security_info.handlings.normal",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.geodiversity",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.dga_score",
-            "data_type": "numeric",
-            "column_name": "DGA Score",
-            "column_order": 3
-          },
-          {
-            "data_path": "action_result.data.*.security_info.geoscore",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.asn_score",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.rip_score",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.securerank2",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.popularity",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.ks_test",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.attack",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.pagerank",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.entropy",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.prefix_score",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.perplexity",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.found",
-            "data_type": "boolean"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.fastflux",
-            "data_type": "boolean"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.threat_type",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.security_info.geodiversity_normalized",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.category_info.status",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.category_info.security_categories",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.status_desc",
-            "data_type": "string",
-            "column_name": "Status",
-            "column_order": 1
-          },
-          {
-            "data_path": "action_result.data.*.tag_info.*.category",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.tag_info.*.period.begin",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.tag_info.*.period.end",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.summary.total_co_occurances",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.summary.domain_status",
-            "data_type": "string"          },
-          {
-            "data_path": "action_result.summary.total_tag_info",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.summary.total_relative_links",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "summary.total_objects",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "summary.total_objects_successful",
-            "data_type": "numeric"
-          }
-        ],
-        "versions": "EQ(*)"
-      },
-      {
-        "action": "ip reputation",
-        "description": "Query OpenDNS for IP info",
-        "type": "investigate",
-        "identifier":"lookup_ip",
-        "read_only": true,
-        "parameters": {
-          "ip": {
-            "description": "IP to query",
-            "data_type": "string",
-            "order": 0,
-            "contains": ["ip"],
-            "primary": true,
-            "required": true
-          }
-        },
-        "render": {
-          "type": "table",
-          "width": 12,
-          "height": 5,
-          "title": "IP Reputation"
-        },
-        "output": [
-          {
-            "data_path": "action_result.status",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.parameter.ip",
-            "data_type": "string",
-            "contains": ["ip"]
-          },
-          {
-            "data_path": "action_result.message",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.name",
-            "data_type": "string",
-            "column_name": "Blocked Domain",
-            "column_order": 0,
-            "contains": ["domain"]
-          },
-          {
-            "data_path": "action_result.data.*.id",
-            "data_type": "string",
-            "column_name": "Domain ID",
-            "column_order": 1
-          },
-          {
-            "data_path": "action_result.summary.total_blocked_domains",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.summary.ip_status",
-            "data_type": "string"
-          },
-          {
-            "data_path": "summary.total_objects",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "summary.total_objects_successful",
-            "data_type": "numeric"
-          }
-        ],
-        "versions": "EQ(*)"
-      },
-      {
-        "action" : "whois domain",
-        "description": "Run a whois query on OpenDNS for the given domain",
-        "type": "investigate",
-        "identifier": "whois_domain",
-        "read_only": true,
-        "parameters": {
-          "domain": {
-            "description": "Domain to query",
-            "data_type": "string",
-            "order": 0,
-            "contains": ["domain", "url"],
-            "primary": true,
-            "required": true,
-            "allow_list": true
-          }
-        },
-        "render": {
-          "type": "table",
-          "width": 12,
-          "height": 5,
-          "title": "Whois details"
-        },
-        "output": [
-          {
-            "data_path": "action_result.status",
-            "data_type": "string",
-            "column_name": "status",
-            "column_order": 1
-          },
-          {
-            "data_path": "action_result.parameter.domain",
-            "data_type": "string",
-            "contains": ["domain", "url"],
-            "column_name": "domain",
-            "column_order": 0
-          },
-          {
-            "data_path": "action_result.message",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.billingContactState",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactPostalCode",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactCity",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.addresses",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantFaxExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantName",
-            "data_type": "string",
-            "column_name": "Registrant Name",
-            "column_order": 10
-          },
-          {
-            "data_path": "action_result.data.*.auditUpdatedDate",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactFax",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.billingContactOrganization",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactPostalCode",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantOrganization",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactPostalCode",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantState",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactName",
-            "data_type": "string",
-            "column_name": "Admin Name",
-            "column_order": 5
-          },
-          {
-            "data_path": "action_result.data.*.billingContactFaxExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.billingContactCity",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactEmail",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantCountry",
-            "data_type": "string",
-            "column_name": "Registrant Country",
-            "column_order": 6
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactState",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactStreet",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantEmail",
-            "data_type": "string",
-            "column_name": "Registrant Email",
-            "column_order": 9,
-            "contains": ["email"]
-          },
-          {
-            "data_path": "action_result.data.*.billingContactCountry",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.billingContactName",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrarName",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactTelephoneExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactFaxExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactCountry",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactFax",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactFaxExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantCity",
-            "data_type": "string",
-            "column_name": "Registrant City",
-            "column_order": 7
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactCity",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactTelephoneExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactOrganization",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.status",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.updated",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactEmail",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactFaxExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.nameServers",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.expires",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantFax",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.billingContactFax",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactOrganization",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactState",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactStreet",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.billingContactPostalCode",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactName",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantPostalCode",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.billingContactTelephone",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.emails",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantTelephone",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactTelephoneExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactCountry",
-            "data_type": "string",
-            "column_name": "Admin Country",
-            "column_order": 3
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactCity",
-            "data_type": "string",
-            "column_name": "Admin City",
-            "column_order": 2
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactTelephone",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.created",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantStreet",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.domainName",
-            "data_type": "string",
-            "contains": [
-              "domain"
-            ]
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactEmail",
-            "data_type": "string",
-            "column_name": "Admin Email",
-            "column_order": 4,
-            "contains": ["email"]
-          },
-          {
-            "data_path": "action_result.data.*.billingContactEmail",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactState",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.administrativeContactOrganization",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.billingContactTelephoneExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactTelephone",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactName",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrantTelephoneExt",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.technicalContactTelephone",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.registrarIANAID",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.zoneContactCountry",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.hasRawText",
-            "data_type": "boolean"
-          },
-          {
-            "data_path": "summary.total_objects",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "summary.total_objects_successful",
-            "data_type": "numeric"
-          }
-        ],
-        "versions":"EQ(*)"
-      }
+        {
+            "action": "whois domain",
+            "description": "Run a whois query on OpenDNS for the given domain",
+            "type": "investigate",
+            "identifier": "whois_domain",
+            "read_only": true,
+            "parameters": {
+                "domain": {
+                    "description": "Domain to query",
+                    "data_type": "string",
+                    "order": 0,
+                    "contains": [
+                        "domain",
+                        "url"
+                    ],
+                    "primary": true,
+                    "required": true,
+                    "allow_list": true
+                }
+            },
+            "render": {
+                "type": "table",
+                "width": 12,
+                "height": 5,
+                "title": "Whois details"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.domain",
+                    "data_type": "string",
+                    "contains": [
+                        "domain",
+                        "url"
+                    ],
+                    "column_name": "domain",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactState",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactPostalCode",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactCity",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.addresses",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantFaxExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantName",
+                    "data_type": "string",
+                    "column_name": "Registrant Name",
+                    "column_order": 10
+                },
+                {
+                    "data_path": "action_result.data.*.auditUpdatedDate",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactFax",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactOrganization",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactPostalCode",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantOrganization",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactPostalCode",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantState",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactName",
+                    "data_type": "string",
+                    "column_name": "Admin Name",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactFaxExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactCity",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactEmail",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantCountry",
+                    "data_type": "string",
+                    "column_name": "Registrant Country",
+                    "column_order": 6
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactState",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactStreet",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantEmail",
+                    "data_type": "string",
+                    "column_name": "Registrant Email",
+                    "column_order": 9,
+                    "contains": [
+                        "email"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactCountry",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactName",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrarName",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactTelephoneExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactFaxExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactCountry",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactFax",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactFaxExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantCity",
+                    "data_type": "string",
+                    "column_name": "Registrant City",
+                    "column_order": 7
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactCity",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactTelephoneExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactOrganization",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.updated",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactEmail",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactFaxExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.nameServers",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.expires",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantFax",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactFax",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactOrganization",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactState",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactStreet",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactPostalCode",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactName",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantPostalCode",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactTelephone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.emails",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantTelephone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactTelephoneExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactCountry",
+                    "data_type": "string",
+                    "column_name": "Admin Country",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactCity",
+                    "data_type": "string",
+                    "column_name": "Admin City",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactTelephone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.created",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantStreet",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.domainName",
+                    "data_type": "string",
+                    "contains": [
+                        "domain"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactEmail",
+                    "data_type": "string",
+                    "column_name": "Admin Email",
+                    "column_order": 4,
+                    "contains": [
+                        "email"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactEmail",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactState",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.administrativeContactOrganization",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.billingContactTelephoneExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactTelephone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactName",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrantTelephoneExt",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.technicalContactTelephone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.registrarIANAID",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.zoneContactCountry",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.hasRawText",
+                    "data_type": "boolean"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        }
     ]
 }
