@@ -14,7 +14,7 @@
     "package_name": "phantom_opendnsinvestigate",
     "logo": "logo_opendns.svg",
     "logo_dark": "logo_opendns_dark.svg",
-    "license": "Copyright (c) Phantom Cyber Corporation 2015-2016",
+    "license": "Copyright (c) Phantom Cyber Corporation, 2015-2018",
     "configuration": {
         "apikey": {
             "data_type": "string",
