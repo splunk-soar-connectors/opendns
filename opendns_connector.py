@@ -198,7 +198,7 @@ class OpendnsConnector(BaseConnector):
 
     def _add_domain_tagging_info(self, domain, data, summary, action_result):
 
-        endpoint = '/domains/{0}/latest_tags'.format(domain)
+        endpoint = '/timeline/{0}'.format(domain)
 
         ret_val, response, status_code = self._make_rest_call(endpoint, None, action_result)
 
@@ -372,6 +372,7 @@ class OpendnsConnector(BaseConnector):
             ret_val = self._test_connectivity(param)
 
         return ret_val
+
 
 if __name__ == '__main__':
 
