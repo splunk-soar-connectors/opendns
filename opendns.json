@@ -4,7 +4,7 @@
     "description": "This app implements investigative actions by querying the OpenDNS Investigate cloud service",
     "type": "reputation",
     "main_module": "opendns_connector.pyc",
-    "app_version": "1.2.21",
+    "app_version": "1.2.22",
     "utctime_updated": "2017-12-19T23:42:36.000000Z",
     "product_vendor": "OpenDNS",
     "product_name": "OpenDNS Investigate",
@@ -12,7 +12,8 @@
     "min_phantom_version": "3.0.247",
     "publisher": "Phantom",
     "package_name": "phantom_opendnsinvestigate",
-    "logo": "opendns.png",
+    "logo": "logo_opendns.svg",
+    "logo_dark": "logo_opendns_dark.svg",
     "license": "Copyright (c) Phantom Cyber Corporation 2016-2017",
     "configuration": {
         "apikey": {
