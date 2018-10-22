@@ -1,14 +1,10 @@
 # --
 # File: opendns_connector.py
 #
-# Copyright (c) Phantom Cyber Corporation, 2016-2017
+# Copyright (c) 2016-2017 Splunk Inc.
 #
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
+# SPLUNK CONFIDENTIAL – Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 #
 # --
 
@@ -60,7 +56,7 @@ class OpendnsConnector(BaseConnector):
         status_code = None
 
         try:
-            r = requests.get(self._base_url + endpoint, headers=headers, params=request_params, verify=config[phantom.APP_JSON_VERIFY])
+            r = requests.get(self._base_url + endpoint, headers=headers, params=request_params)
         except Exception as e:
             return (action_result.set_status(phantom.APP_ERROR, OPENDNS_ERR_SERVER_CONNECTION, e), resp_json, status_code)
 
