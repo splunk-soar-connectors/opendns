@@ -14,7 +14,7 @@
     "package_name": "phantom_opendnsinvestigate",
     "logo": "logo_opendns.svg",
     "logo_dark": "logo_opendns_dark.svg",
-    "license": "Copyright (c) 2016-2017 Splunk Inc.",
+    "license": "Copyright (c) 2016-2018 Splunk Inc.",
     "configuration": {
         "apikey": {
             "data_type": "password",
