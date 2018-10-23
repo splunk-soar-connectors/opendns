@@ -9,25 +9,18 @@
     "product_vendor": "OpenDNS",
     "product_name": "OpenDNS Investigate",
     "product_version_regex": ".*",
-    "min_phantom_version": "3.0.247",
+    "min_phantom_version": "3.5.210",
     "publisher": "Phantom",
     "package_name": "phantom_opendnsinvestigate",
     "logo": "logo_opendns.svg",
     "logo_dark": "logo_opendns_dark.svg",
-    "license": "Copyright (c) Phantom Cyber Corporation 2016-2017",
+    "license": "Copyright (c) 2016-2018 Splunk Inc.",
     "configuration": {
         "apikey": {
             "data_type": "password",
             "order": 0,
             "description": "OpenDNS API key",
             "required": true
-        },
-        "verify_server_cert": {
-            "data_type": "boolean",
-            "description": "Verify server certificate",
-            "required": true,
-            "order": 1,
-            "default": true
         }
     },
     "actions": [
