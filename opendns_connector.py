@@ -1,14 +1,8 @@
-# --
 # File: opendns_connector.py
+# Copyright (c) 2016-2018 Splunk Inc.
 #
-# Copyright (c) Phantom Cyber Corporation, 2014-2018
-#
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 #
 # --
 
@@ -60,7 +54,7 @@ class OpendnsConnector(BaseConnector):
         status_code = None
 
         try:
-            r = requests.get(self._base_url + endpoint, headers=headers, params=request_params, verify=config[phantom.APP_JSON_VERIFY])
+            r = requests.get(self._base_url + endpoint, headers=headers, params=request_params)
         except Exception as e:
             return (action_result.set_status(phantom.APP_ERROR, OPENDNS_ERR_SERVER_CONNECTION, e), resp_json, status_code)
 
@@ -198,7 +192,7 @@ class OpendnsConnector(BaseConnector):
 
     def _add_domain_tagging_info(self, domain, data, summary, action_result):
 
-        endpoint = '/domains/{0}/latest_tags'.format(domain)
+        endpoint = '/timeline/{0}'.format(domain)
 
         ret_val, response, status_code = self._make_rest_call(endpoint, None, action_result)
 
@@ -372,6 +366,7 @@ class OpendnsConnector(BaseConnector):
             ret_val = self._test_connectivity(param)
 
         return ret_val
+
 
 if __name__ == '__main__':
 
