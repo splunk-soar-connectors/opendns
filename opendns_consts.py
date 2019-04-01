@@ -37,6 +37,6 @@ OPENDNS_USING_BASE_URL = "Using url: {base_url}"
 
 OPENDNS_REST_API_URL = "https://investigate.api.opendns.com"
 STATUS_DESC = {
-        '0': 'UNKNOWN',
-        '1': 'SAFE',
+        '0': 'NO STATUS',
+        '1': 'NON MALICIOUS',
         '-1': 'MALICIOUS'}
