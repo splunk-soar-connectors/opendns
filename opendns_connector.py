@@ -88,7 +88,7 @@ class OpendnsConnector(BaseConnector):
 
         endpoint = '/domains/categorization/phantomcyber.com'
 
-        action_result = ActionResult()
+        action_result = self.add_action_result(ActionResult(dict(param)))
 
         self.save_progress(OPENDNS_MSG_GET_DOMAIN_TEST)
 
@@ -96,11 +96,12 @@ class OpendnsConnector(BaseConnector):
 
         if (phantom.is_fail(ret_val)):
             self.debug_print(action_result.get_message())
-            self.set_status(phantom.APP_ERROR, action_result.get_message())
-            self.append_to_message(OPENDNS_ERR_CONNECTIVITY_TEST)
-            return self.get_status()
+            action_result.set_status(phantom.APP_ERROR, action_result.get_message())
+            self.save_progress(OPENDNS_ERR_CONNECTIVITY_TEST)
+            return action_result.get_status()
 
-        return self.set_status_save_progress(phantom.APP_SUCCESS, OPENDNS_SUCC_CONNECTIVITY_TEST)
+        self.save_progress(OPENDNS_SUCC_CONNECTIVITY_TEST)
+        return action_result.set_status(phantom.APP_SUCCESS)
 
     def _get_domain_category_info(self, domain, data, summary, action_result):
 
@@ -110,7 +111,8 @@ class OpendnsConnector(BaseConnector):
 
         if (phantom.is_fail(ret_val)):
             self.debug_print(action_result.get_message())
-            return self.set_status(phantom.APP_ERROR, action_result.get_message())
+            action_result.set_status(phantom.APP_ERROR, action_result.get_message())
+            return phantom.APP_ERROR
 
         # parse the category response
         domain_cat_info = response.get(domain)
@@ -142,7 +144,8 @@ class OpendnsConnector(BaseConnector):
 
         if (phantom.is_fail(ret_val)):
             self.debug_print(action_result.get_message())
-            return self.set_status(phantom.APP_ERROR, action_result.get_message())
+            action_result.set_status(phantom.APP_ERROR, action_result.get_message())
+            return phantom.APP_ERROR
 
         # parse the response
         links = response.get('tb1')
@@ -162,7 +165,8 @@ class OpendnsConnector(BaseConnector):
 
         if (phantom.is_fail(ret_val)):
             self.debug_print(action_result.get_message())
-            return self.set_status(phantom.APP_ERROR, action_result.get_message())
+            action_result.set_status(phantom.APP_ERROR, action_result.get_message())
+            return phantom.APP_ERROR
 
         # parse the response
         co_occurances = response.get('pfs2')
@@ -182,7 +186,8 @@ class OpendnsConnector(BaseConnector):
 
         if (phantom.is_fail(ret_val)):
             self.debug_print(action_result.get_message())
-            return self.set_status(phantom.APP_ERROR, action_result.get_message())
+            action_result.set_status(phantom.APP_ERROR, action_result.get_message())
+            return phantom.APP_ERROR
 
         # parse the response
         if (status_code != 204):
@@ -198,7 +203,7 @@ class OpendnsConnector(BaseConnector):
 
         if (phantom.is_fail(ret_val)):
             self.debug_print(action_result.get_message())
-            return self.set_status(phantom.APP_ERROR, action_result.get_message())
+            return action_result.set_status(phantom.APP_ERROR, action_result.get_message())
 
         # parse the response
         if (response):
@@ -206,6 +211,24 @@ class OpendnsConnector(BaseConnector):
             summary.update({OPENDNS_JSON_TOTAL_TAG_INFO: len(response)})
         else:
             summary.update({OPENDNS_JSON_TOTAL_TAG_INFO: 0})
+
+        return phantom.APP_SUCCESS
+
+    def _add_domain_risk_score_info(self, domain, data, summary, action_result):
+        endpoint = '/domains/risk-score/{0}'.format(domain)
+
+        ret_val, response, status_code = self._make_rest_call(endpoint, None, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            self.debug_print(action_result.get_message())
+            return action_result.set_status(phantom.APP_ERROR, action_result.get_message())
+
+        # parse the response
+        if (response):
+            data[OPENDNS_JSON_FEATURES] = response.get(OPENDNS_JSON_FEATURES, [])
+            risk_score = response.get(OPENDNS_JSON_RISK_SCORE, 0)
+            data[OPENDNS_JSON_RISK_SCORE] = risk_score
+            summary.update({OPENDNS_JSON_RISK_SCORE: risk_score})
 
         return phantom.APP_SUCCESS
 
@@ -255,6 +278,12 @@ class OpendnsConnector(BaseConnector):
         if (not ret_val):
             return action_result.get_status()
 
+        # risk score
+        ret_val = self._add_domain_risk_score_info(domain, data, summary, action_result)
+
+        if (not ret_val):
+            return action_result.get_status()
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _lookup_ip(self, param):
@@ -275,7 +304,7 @@ class OpendnsConnector(BaseConnector):
 
         if (phantom.is_fail(ret_val)):
             self.debug_print(action_result.get_message())
-            return self.set_status(phantom.APP_ERROR, action_result.get_message())
+            return action_result.set_status(phantom.APP_ERROR, action_result.get_message())
 
         # parse the response
         if (status_code == 204):
@@ -330,7 +359,7 @@ class OpendnsConnector(BaseConnector):
 
         if (phantom.is_fail(ret_val)):
             self.debug_print(action_result.get_message())
-            return self.set_status(phantom.APP_ERROR, action_result.get_message())
+            return action_result.set_status(phantom.APP_ERROR, action_result.get_message())
 
         action_result.add_data(response)
 
