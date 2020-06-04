@@ -24,6 +24,7 @@ class OpendnsConnector(BaseConnector):
     ACTION_ID_LOOKUP_IP = "lookup_ip"
     ACTION_ID_LOOKUP_DOMAIN = "lookup_domain"
     ACTION_ID_WHOIS_DOMAIN = "whois_domain"
+    ACTION_ID_LOOKUP_HASH = "lookup_hash"
 
     def __init__(self):
 
@@ -41,7 +42,7 @@ class OpendnsConnector(BaseConnector):
 
         return phantom.APP_SUCCESS
 
-    def _make_rest_call(self, endpoint, request_params, action_result):
+    def _make_rest_call(self, endpoint, request_params, action_result, timeout=30):
 
         config = self.get_config()
 
@@ -54,7 +55,7 @@ class OpendnsConnector(BaseConnector):
         status_code = None
 
         try:
-            r = requests.get(self._base_url + endpoint, headers=headers, params=request_params)
+            r = requests.get(self._base_url + endpoint, headers=headers, params=request_params, timeout=timeout)
         except Exception as e:
             return (action_result.set_status(phantom.APP_ERROR, OPENDNS_ERR_SERVER_CONNECTION, e), resp_json, status_code)
 
@@ -70,6 +71,9 @@ class OpendnsConnector(BaseConnector):
             return (action_result.set_status(phantom.APP_ERROR, "Unable to parse response"), resp_json, status_code)
 
         if (r.status_code == 204):  # success, but no data
+            return (phantom.APP_SUCCESS, resp_json, status_code)
+
+        if (r.status_code == 404 and 'sample' in endpoint):
             return (phantom.APP_SUCCESS, resp_json, status_code)
 
         if (r.status_code != requests.codes.ok):  # pylint: disable=E1101
@@ -231,6 +235,43 @@ class OpendnsConnector(BaseConnector):
             summary.update({OPENDNS_JSON_RISK_SCORE: risk_score})
 
         return phantom.APP_SUCCESS
+    def _add_hash_sample(self, hash, data, summary, action_result):
+
+        endpoint = '/sample/{0}?limit=100'.format(hash)
+
+        ret_val, response, status_code = self._make_rest_call(endpoint, None, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            self.debug_print(action_result.get_message())
+            return self.set_status(phantom.APP_ERROR, action_result.get_message())
+
+        # parse the response
+        if (response):
+            if response.get('errorMessage') == "Not found":
+                response['errorMessage'] = "Hash not found"
+            data[OPENDNS_JSON_SAMPLE] = response
+            summary['total_behaviors'] = len(response.get('behaviors', []))
+            summary['total_connections'] = len(response.get('connections', {}).get('connections', []))
+            # summary['total_behaviors'] = len(response)
+
+        return phantom.APP_SUCCESS
+
+    def _add_sample_artifacts(self, hash, data, summary, action_result):
+
+        endpoint = '/sample/{0}/artifacts?limit=100'.format(hash)
+
+        ret_val, response, status_code = self._make_rest_call(endpoint, None, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            self.debug_print(action_result.get_message())
+            return self.set_status(phantom.APP_ERROR, action_result.get_message())
+
+        # parse the response
+        if (response):
+            data[OPENDNS_JSON_SAMPLE_ARTIFACTS] = response
+            summary['total_artifacts'] = len(response) if isinstance(response, list) else 'N/A'
+
+        return phantom.APP_SUCCESS, response
 
     def _lookup_domain(self, param):
 
@@ -371,6 +412,41 @@ class OpendnsConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _lookup_hash(self, param):
+
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Progress
+        self.save_progress(OPENDNS_USING_BASE_URL, base_url=self._base_url)
+
+        # Connectivity
+        self.save_progress(phantom.APP_PROG_CONNECTING_TO_ELLIPSES, self._host)
+
+        hash = param[OPENDNS_JSON_HASH]
+
+        # Add the data that will include info about this domain
+        data = action_result.add_data({})
+        summary = action_result.update_summary({})
+
+        # Sample data
+        ret_val = self._add_hash_sample(hash, data, summary, action_result)
+
+        if (not ret_val):
+            return action_result.get_status()
+
+        if data[OPENDNS_JSON_SAMPLE].get('errorMessage') == "Hash not found":
+            error = {"error": "Hash not found"}
+            data[OPENDNS_JSON_SAMPLE_ARTIFACTS] = error
+            return action_result.set_status(phantom.APP_SUCCESS)
+
+        # Artifacts
+        ret_val, data = self._add_sample_artifacts(hash, data, summary, action_result)
+
+        if (not ret_val):
+            return action_result.get_status()
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
     def handle_action(self, param):
         """Function that handles all the actions
 
@@ -391,6 +467,8 @@ class OpendnsConnector(BaseConnector):
             ret_val = self._lookup_domain(param)
         elif (action == self.ACTION_ID_WHOIS_DOMAIN):
             ret_val = self._whois_domain(param)
+        elif (action == self.ACTION_ID_LOOKUP_HASH):
+            ret_val = self._lookup_hash(param)
         elif (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY):
             ret_val = self._test_connectivity(param)
 

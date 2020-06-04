@@ -1131,6 +1131,383 @@
                 }
             ],
             "versions": "EQ(*)"
+        },
+        {
+            "action": "hash reputation",
+            "description": "Query OpenDNS for hash info",
+            "type": "investigate",
+            "identifier": "lookup_hash",
+            "read_only": true,
+            "parameters": {
+                "hash": {
+                    "description": "Hash to query",
+                    "data_type": "string",
+                    "order": 0,
+                    "contains": [
+                        "hash"
+                    ],
+                    "primary": true,
+                    "required": true
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Hash Lookup",
+                "type": "table",
+                "height": 5
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "example_values": [
+                        "success"
+                    ],
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.hash",
+                    "data_type": "string",
+                    "contains": [
+                        "hash",
+                        "sha256"
+                    ],
+                    "example_values": [
+                        "7dfe5c455bc8bd693eab071ab8090e236f3aa314b6791ed3ba3a7ca9d2312f05"
+                    ],
+                    "column_order": 0,
+                    "column_name": "Hash"
+                },
+                {
+                    "data_path": "action_result.data.*.sample.behaviors.*.category",
+                    "data_type": "string",
+                    "example_values": [
+                        "antivirus"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.behaviors.*.hits",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.behaviors.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "registry-autorun-key-modified"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.behaviors.*.tags",
+                    "data_type": "string",
+                    "example_values": [
+                        "file"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.behaviors.*.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "Process Modified Autorun Registry Key Value"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.behaviors.*.confidence",
+                    "data_type": "numeric",
+                    "example_values": [
+                        60
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.behaviors.*.threat",
+                    "data_type": "numeric",
+                    "example_values": [
+                        48
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.behaviors.*.severity",
+                    "data_type": "numeric",
+                    "example_values": [
+                        80
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.magicType",
+                    "data_type": "string",
+                    "example_values": [
+                        "PE32 executable (GUI) Intel 80386, for MS Windows"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.sha1",
+                    "data_type": "string",
+                    "example_values": [
+                        "977e866004080a265fbbd59f6fb1e208c30b3eac"
+                    ],
+                    "contains": [
+                        "sha1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.size",
+                    "data_type": "numeric",
+                    "example_values": [
+                        203776
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.threatScore",
+                    "data_type": "numeric",
+                    "example_values": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.popularity1Month",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "200.87.164.69"
+                    ],
+                    "contains": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.popularity3Month",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.popularity",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.firstQueried",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.popularityWeek",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.lastSeen",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1468214701000
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "IP"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.firstSeen",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1468214701000
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.lastCommit",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.ips",
+                    "data_type": "string",
+                    "example_values": [
+                        "216.58.219.206"
+                    ],
+                    "contains": [
+                        "ip"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.connections.*.urls",
+                    "data_type": "string",
+                    "example_values": [
+                        "http://google.com/"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.limit",
+                    "data_type": "numeric",
+                    "example_values": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.totalResults",
+                    "data_type": "numeric",
+                    "example_values": [
+                        4
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.moreDataAvailable",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.connections.offset",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.visible",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.lastSeen",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1468214701000
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.samples.limit",
+                    "data_type": "numeric",
+                    "example_values": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.samples.totalResults",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.samples.moreDataAvailable",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.samples.offset",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.sha256",
+                    "data_type": "string",
+                    "example_values": [
+                        "7dfe5c455bc8bd693eab071ab8090e236f3aa314b6791ed3ba3a7ca9d2312f05"
+                    ],
+                    "contains": [
+                        "sha256"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.avresults.*.product",
+                    "data_type": "string",
+                    "example_values": [
+                        "ClamAV"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.avresults.*.signature",
+                    "data_type": "string",
+                    "example_values": [
+                        "BC.Win.Virus.Ransom-9157.A"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.firstSeen",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1468214701000
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sample.md5",
+                    "data_type": "string",
+                    "example_values": [
+                        "fd249f69f88ff4b4f5edf2efc345defb"
+                    ],
+                    "contains": [
+                        "md5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.artifacts.error",
+                    "data_type": "string",
+                    "example_values": [
+                        "Only Threat Grid customers have access to artifact data"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Total connections: 4, Total artifacts: N/A, Total behaviors: 17"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.total_behaviors",
+                    "data_type": "numeric",
+                    "example_values": [
+                        17
+                    ],
+                    "column_name": "Total Behaviors",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.summary.total_connections",
+                    "data_type": "numeric",
+                    "example_values": [
+                        4
+                    ],
+                    "column_name": "Total Connections",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.summary.total_artifacts",
+                    "data_type": "string",
+                    "example_values": [
+                        "N/A"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
         }
     ]
 }
