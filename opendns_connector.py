@@ -298,7 +298,7 @@ class OpendnsConnector(BaseConnector):
 
         ip = param[OPENDNS_JSON_IP]
 
-        endpoint = '/ips/{0}/latest_domains'.format(ip)
+        endpoint = '/pdns/ip/{0}'.format(ip)
 
         ret_val, response, status_code = self._make_rest_call(endpoint, None, action_result)
 
@@ -314,14 +314,14 @@ class OpendnsConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, "Response does not contain any data")
 
         try:
-            block_domains = len(response)
-            if (block_domains == 0):
+            block_domains = response['records']
+            if (len(block_domains) == 0):
                 status_desc = STATUS_DESC['1']  # SAFE
             else:
                 status_desc = STATUS_DESC['-1']  # MALICIOUS
 
-            for blocked_domain in response:
-                action_result.add_data(blocked_domain)
+            for blocked_domain in block_domains:
+                action_result.add_data({"name": blocked_domain['rr'], "id": blocked_domain['lastSeen']})
         except Exception as e:
             self.debug_print("Unable to parse response from the server", e)
             return action_result.set_status(phantom.APP_ERROR, "Unable to parse response from the server")
