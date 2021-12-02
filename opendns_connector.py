@@ -319,7 +319,8 @@ class OpendnsConnector(BaseConnector):
             status_desc = STATUS_DESC['0']  # UNKNOWN
 
         if (not response):
-            return action_result.set_status(phantom.APP_ERROR, "Response does not contain any data")
+            response = ""
+            return action_result.set_status(phantom.APP_SUCCESS, "Response does not contain any data")
 
         try:
             block_domains = len(response)
